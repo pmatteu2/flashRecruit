@@ -15,7 +15,10 @@
   <input type="text" id="inputEmail" name="email"><br>
   <input type="submit" value="Submit">
 </form>
-<div id='fav'>Favorites</div>
+<div id='fav'>Favorites
+	<ul id='flist'>
+	</ul>
+</div>
 <div id='list'>Contacts
 	<ul id='clist'>
 	</ul>
@@ -28,7 +31,9 @@
 <script src="/app-bundle.js"></script>
 <script>
 	$( document ).ready(function() {
+
 		var array = [];
+		var favArray = [];
 		$("form").submit(function(e,x){
     	e.preventDefault();
     	var data = $('form').serializeArray()
@@ -38,16 +43,28 @@
     		lastName: data[1].value,
     		email: data[2].value
     	})
-    	$("#clist").html("")
-    	for (var i = 0 ; i < array.length ; i++){
-    		$("#clist").append("<li>First Name: "+array[i].firstName+"<br>"+ 
-			        	"Last Name: "+array[i].lastName+"<br>"+ 
-			        	"Email: "+array[i].email+"<br>"+ 
-							"</li>");
-    	}
-    	
+    	refreshList();
+   //  	$("#inputFirst").val("")
+   //  	$("#inputLast").val("")
+   //  	$("#inputEmail").val("")
+   //  	$("#clist").html("")
+   //  	for (var i = 0 ; i < array.length ; i++){
+   //  		$("#clist").append("<li id='listItem"+i+"'>First Name: "+array[i].firstName+
+   //  			"<button type='button' class='addFav' id='addFav"+i+"''>add to Favorites</button><br>"+ 
+			//         	"Last Name: "+array[i].lastName+
+			//         	"<button type='button' class='delete' id='delete"+i+"''>Delete Contact</button><br>"+ 
+			//         	"Email: "+array[i].email+"<br>"+ 
+			// 				"</li>");
+   //  	}
+   //  	$(".addFav").css('background-color','pink')
+			// $(".delete").css('background-color','brown')
+			// $(".delete").css('color','white')
+
 		});
+
+
 		$.getJSON('contacts.json', function (json) {
+			var fileCount = 0
 			for (var key in json) {
 			    if (json.hasOwnProperty(key)) {
 			        var item = json[key];
@@ -56,15 +73,106 @@
 			            lastName: item.lastName,
 			            email: item.email
 			        });
-			        $("#clist").append("<li>First Name: "+item.firstName+"<br>"+ 
-			        	"Last Name: "+item.lastName+"<br>"+ 
+			        $("#clist").append("<li id='listItem"+fileCount+"'>First Name: "+item.firstName+
+			        	"<button type='button' class='addFav' id='addFav"+fileCount+"''>add to Favorites</button><br>"+ 
+			        	"Last Name: "+item.lastName+
+			        	"<button type='button' class='delete' id='delete"+fileCount+"''>Delete Contact</button><br>"+ 
 			        	"Email: "+item.email+"<br>"+ 
 							"</li>");
+							fileCount++
+
 			    }
 			}
+			$(".addFav").css('background-color','pink')
+			$(".delete").css('background-color','brown')
+			$(".delete").css('color','white')
 
+			$(".addFav").click(function(e){
+				// console.log(this.id,this)
+				var index
+				var string = this.id
+				index = Number(string.replace('addFav',''))
+				favArray.push(array.splice(index,1)[0])
+				console.log(favArray)
+				refreshList()
+			})
+
+			$('.delete').click(function(e){
+				var index
+				var string = this.id
+				index = Number(string.replace('delete',''))
+				array.splice(index,1)
+				refreshList()
+			})
+
+		
 		console.log('pj',array)
 		});
+		function refreshList(){
+			$("#inputFirst").val("")
+    		$("#inputLast").val("")
+    		$("#inputEmail").val("")
+    		$("#clist").html("")
+    		for (var i = 0 ; i < array.length ; i++){
+    			$("#clist").append("<li id='listItem"+i+"'>First Name: "+array[i].firstName+
+    				"<button type='button' class='addFav' id='addFav"+i+"''>add to Favorites</button><br>"+ 
+			        	"Last Name: "+array[i].lastName+
+			        	"<button type='button' class='delete' id='delete"+i+"''>Delete Contact</button><br>"+ 
+			        	"Email: "+array[i].email+"<br>"+ 
+							"</li>");
+	    	}
+	    	$(".addFav").css('background-color','pink')
+				$(".delete").css('background-color','brown')
+				$(".delete").css('color','white')
+
+				$("#flist").html("")
+    		for (var i = 0 ; i < favArray.length ; i++){
+    			console.log(favArray,'pj2',i,favArray[0])
+    			$("#flist").append("<li id='flistItem"+i+"'>First Name: "+favArray[i].firstName+
+    				"<button type='button' class='delFav' id='delFav"+i+"''>Remove from Favorites</button><br>"+ 
+			        	"Last Name: "+favArray[i].lastName+
+			        	"<button type='button' class='fdelete' id='fdelete"+i+"''>Delete Contact</button><br>"+ 
+			        	"Email: "+favArray[i].email+"<br>"+ 
+							"</li>");
+	    	}
+
+
+	    	$(".addFav").click(function(e){
+					// console.log(this.id,this)
+					var index
+					var string = this.id
+					index = Number(string.replace('addFav',''))
+					favArray.push(array.splice(index,1)[0])
+					console.log(favArray)
+					refreshList()
+				})
+
+	    	$('.delete').click(function(e){
+					var index
+					var string = this.id
+					index = Number(string.replace('delete',''))
+					array.splice(index,1)
+					refreshList()
+				})
+
+				$(".delFav").click(function(e){
+					// console.log(this.id,this)
+					var index
+					var string = this.id
+					index = Number(string.replace('delFav',''))
+					array.push(favArray.splice(index,1)[0])
+					// console.log(favArray)
+					refreshList()
+				})
+
+				$('.fdelete').click(function(e){
+					var index
+					var string = this.id
+					index = Number(string.replace('fdelete',''))
+					favArray.splice(index,1)
+					refreshList()
+				})
+		}
 	})
 	
 
