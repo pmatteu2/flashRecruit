@@ -1,14 +1,73 @@
 <html>
 <head>
   <title>flashRecruit</title>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 </head>
 <body>
 
 <h1>Hello, flashRecruit! please work2</h1>
+<form>
+  First name:<br>
+  <input type="text" id="inputFirst" name="firstname"><br>
+  Last name:<br>
+  <input type="text" id="inputLast" name="lastname"><br>
+  email:<br>
+  <input type="text" id="inputEmail" name="email"><br>
+  <input type="submit" value="Submit">
+</form>
+<div id='fav'>Favorites</div>
+<div id='list'>Contacts
+	<ul id='clist'>
+	</ul>
+</div>
+
 
 <div id="app"></div>
 
 <script src="/vendor-bundle.js"></script>
 <script src="/app-bundle.js"></script>
+<script>
+	$( document ).ready(function() {
+		var array = [];
+		$("form").submit(function(e,x){
+    	e.preventDefault();
+    	var data = $('form').serializeArray()
+    	console.log(data)
+    	array.push({
+    		firstName: data[0].value,
+    		lastName: data[1].value,
+    		email: data[2].value
+    	})
+    	$("#clist").html("")
+    	for (var i = 0 ; i < array.length ; i++){
+    		$("#clist").append("<li>First Name: "+array[i].firstName+"<br>"+ 
+			        	"Last Name: "+array[i].lastName+"<br>"+ 
+			        	"Email: "+array[i].email+"<br>"+ 
+							"</li>");
+    	}
+    	
+		});
+		$.getJSON('contacts.json', function (json) {
+			for (var key in json) {
+			    if (json.hasOwnProperty(key)) {
+			        var item = json[key];
+			        array.push({
+			            firstName: item.firstName,
+			            lastName: item.lastName,
+			            email: item.email
+			        });
+			        $("#clist").append("<li>First Name: "+item.firstName+"<br>"+ 
+			        	"Last Name: "+item.lastName+"<br>"+ 
+			        	"Email: "+item.email+"<br>"+ 
+							"</li>");
+			    }
+			}
+
+		console.log('pj',array)
+		});
+	})
+	
+
+</script>
 </body>
 </html>
