@@ -16,7 +16,8 @@
     "body-parser": "^1.15.2",
     "dotenv": "^2.0.0",
     "express": "^4.14.0",
-    "require-self-ref": "^2.0"
+    "require-self-ref": "^2.0",
+    "browserify-middleware": "^7.1.0"
   },
   "devDependencies": {
     "chai": "^3.5.0",
@@ -25,5 +26,8 @@
     "nodemon": "^1.11.0",
     "supertest": "^2.0",
     "pult-cli": "*"
-  }
+  },
+  "addedPultModules": [
+    "spa"
+  ]
 }

@@ -1,3 +1,11 @@
 {
-  "routerPipeline": []
+  "routerPipeline": [
+    "./client-bundles.js",
+    "./catch-all-index-page.js"
+  ],
+  "spa": {
+    "browserify": {
+      "external": []
+    }
+  }
 }
