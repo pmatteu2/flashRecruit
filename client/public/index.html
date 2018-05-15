@@ -4,16 +4,21 @@
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 </head>
 <body>
+<style>
+body {
+	background-color: lightblue;
+}
+</style>
+<h1>FlashRecruit Contact List</h1>
 
-<h1>Hello, flashRecruit! please work2</h1>
 <form>
   First name:<br>
   <input type="text" id="inputFirst" name="firstname"><br>
   Last name:<br>
   <input type="text" id="inputLast" name="lastname"><br>
-  email:<br>
+  Email:<br>
   <input type="text" id="inputEmail" name="email"><br>
-  <input type="submit" value="Submit">
+  <input type="submit" value="Add Contact">
 </form>
 <div id='fav'>Favorites
 	<ul id='flist'>
@@ -30,10 +35,14 @@
 <script src="/vendor-bundle.js"></script>
 <script src="/app-bundle.js"></script>
 <script>
+/* I set up one array for favorites and one array for just contacts, 
+whenever one is added, removed or moved i just refresh both lists on the page using the refreshList function at the bottom
+*/
 	$( document ).ready(function() {
 
 		var array = [];
 		var favArray = [];
+		// event when submit is hit to add contact
 		$("form").submit(function(e,x){
     	e.preventDefault();
     	var data = $('form').serializeArray()
@@ -44,25 +53,10 @@
     		email: data[2].value
     	})
     	refreshList();
-   //  	$("#inputFirst").val("")
-   //  	$("#inputLast").val("")
-   //  	$("#inputEmail").val("")
-   //  	$("#clist").html("")
-   //  	for (var i = 0 ; i < array.length ; i++){
-   //  		$("#clist").append("<li id='listItem"+i+"'>First Name: "+array[i].firstName+
-   //  			"<button type='button' class='addFav' id='addFav"+i+"''>add to Favorites</button><br>"+ 
-			//         	"Last Name: "+array[i].lastName+
-			//         	"<button type='button' class='delete' id='delete"+i+"''>Delete Contact</button><br>"+ 
-			//         	"Email: "+array[i].email+"<br>"+ 
-			// 				"</li>");
-   //  	}
-   //  	$(".addFav").css('background-color','pink')
-			// $(".delete").css('background-color','brown')
-			// $(".delete").css('color','white')
 
 		});
 
-
+		// grabbing the first contacts from the file provided and putting them on the contacts list
 		$.getJSON('contacts.json', function (json) {
 			var fileCount = 0
 			for (var key in json) {
@@ -93,7 +87,6 @@
 				var string = this.id
 				index = Number(string.replace('addFav',''))
 				favArray.push(array.splice(index,1)[0])
-				console.log(favArray)
 				refreshList()
 			})
 
@@ -106,13 +99,15 @@
 			})
 
 		
-		console.log('pj',array)
+		
 		});
 		function refreshList(){
-			$("#inputFirst").val("")
+				// i start by setting value of everything to empty
+			  $("#inputFirst").val("")
     		$("#inputLast").val("")
     		$("#inputEmail").val("")
     		$("#clist").html("")
+    		// contact list
     		for (var i = 0 ; i < array.length ; i++){
     			$("#clist").append("<li id='listItem"+i+"'>First Name: "+array[i].firstName+
     				"<button type='button' class='addFav' id='addFav"+i+"''>add to Favorites</button><br>"+ 
@@ -124,10 +119,10 @@
 	    	$(".addFav").css('background-color','pink')
 				$(".delete").css('background-color','brown')
 				$(".delete").css('color','white')
-
+				// favorite list
 				$("#flist").html("")
     		for (var i = 0 ; i < favArray.length ; i++){
-    			console.log(favArray,'pj2',i,favArray[0])
+    			// console.log(favArray,'pj2',i,favArray[0])
     			$("#flist").append("<li id='flistItem"+i+"'>First Name: "+favArray[i].firstName+
     				"<button type='button' class='delFav' id='delFav"+i+"''>Remove from Favorites</button><br>"+ 
 			        	"Last Name: "+favArray[i].lastName+
@@ -137,13 +132,19 @@
 	    	}
 
 
+	    	$(".delFav").css('background-color','red')
+	    	$(".delFav").css('color','white')
+	    	$(".fdelete").css('background-color','brown')
+				$(".fdelete").css('color','white')
+
+				// adding all the click events
 	    	$(".addFav").click(function(e){
 					// console.log(this.id,this)
 					var index
 					var string = this.id
 					index = Number(string.replace('addFav',''))
 					favArray.push(array.splice(index,1)[0])
-					console.log(favArray)
+					// console.log(favArray)
 					refreshList()
 				})
 

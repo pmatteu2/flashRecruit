@@ -7,4 +7,4 @@
 // See all options here: https://github.com/Concatapult/pult
 //
 
-document.querySelector('h1').innerHTML += ' (SPA style!)'
+// document.querySelector('h1').innerHTML += ' (SPA style!)'
