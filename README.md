@@ -13,5 +13,3 @@ A new project in the making.
 Now visit [localhost:4000](http://localhost:4000/)
 
 
-## Made with Concatapult boilerplate
-
