@@ -52,6 +52,9 @@ whenever one is added, removed or moved i just refresh both lists on the page us
     		lastName: data[1].value,
     		email: data[2].value
     	})
+    	$("#inputFirst").val("")
+    	$("#inputLast").val("")
+    	$("#inputEmail").val("")
     	refreshList();
 
 		});
@@ -71,7 +74,8 @@ whenever one is added, removed or moved i just refresh both lists on the page us
 			        	"<button type='button' class='addFav' id='addFav"+fileCount+"''>add to Favorites</button><br>"+ 
 			        	"Last Name: "+item.lastName+
 			        	"<button type='button' class='delete' id='delete"+fileCount+"''>Delete Contact</button><br>"+ 
-			        	"Email: "+item.email+"<br>"+ 
+			        	"Email: "+item.email+
+			        	"<button type='button' class='update' id='update"+fileCount+"''>Update Contact</button><br>"+
 							"</li>");
 							fileCount++
 
@@ -98,14 +102,23 @@ whenever one is added, removed or moved i just refresh both lists on the page us
 				refreshList()
 			})
 
+			$('.update').click(function(e){
+				var index
+				var string = this.id
+				index = Number(string.replace('update',''))
+				$("#inputFirst").val(array[index].firstName)
+    		$("#inputLast").val(array[index].lastName)
+    		$("#inputEmail").val(array[index].email)
+				array.splice(index,1)
+				refreshList()
+			})
+
 		
 		
 		});
 		function refreshList(){
 				// i start by setting value of everything to empty
-			  $("#inputFirst").val("")
-    		$("#inputLast").val("")
-    		$("#inputEmail").val("")
+			  
     		$("#clist").html("")
     		// contact list
     		for (var i = 0 ; i < array.length ; i++){
@@ -113,7 +126,8 @@ whenever one is added, removed or moved i just refresh both lists on the page us
     				"<button type='button' class='addFav' id='addFav"+i+"''>add to Favorites</button><br>"+ 
 			        	"Last Name: "+array[i].lastName+
 			        	"<button type='button' class='delete' id='delete"+i+"''>Delete Contact</button><br>"+ 
-			        	"Email: "+array[i].email+"<br>"+ 
+			        	"Email: "+array[i].email+
+			        	"<button type='button' class='update' id='update"+i+"''>Update Contact</button><br>"+ 
 							"</li>");
 	    	}
 	    	$(".addFav").css('background-color','pink')
@@ -127,7 +141,8 @@ whenever one is added, removed or moved i just refresh both lists on the page us
     				"<button type='button' class='delFav' id='delFav"+i+"''>Remove from Favorites</button><br>"+ 
 			        	"Last Name: "+favArray[i].lastName+
 			        	"<button type='button' class='fdelete' id='fdelete"+i+"''>Delete Contact</button><br>"+ 
-			        	"Email: "+favArray[i].email+"<br>"+ 
+			        	"Email: "+favArray[i].email+
+			        	"<button type='button' class='fupdate' id='fupdate"+i+"''>Update Contact</button><br>"+ 
 							"</li>");
 	    	}
 
@@ -156,6 +171,17 @@ whenever one is added, removed or moved i just refresh both lists on the page us
 					refreshList()
 				})
 
+				$('.update').click(function(e){
+					var index
+					var string = this.id
+					index = Number(string.replace('update',''))
+					$("#inputFirst").val(array[index].firstName)
+	    		$("#inputLast").val(array[index].lastName)
+	    		$("#inputEmail").val(array[index].email)
+					array.splice(index,1)
+					refreshList()
+				})
+
 				$(".delFav").click(function(e){
 					// console.log(this.id,this)
 					var index
@@ -170,6 +196,17 @@ whenever one is added, removed or moved i just refresh both lists on the page us
 					var index
 					var string = this.id
 					index = Number(string.replace('fdelete',''))
+					favArray.splice(index,1)
+					refreshList()
+				})
+
+				$('.fupdate').click(function(e){
+					var index
+					var string = this.id
+					index = Number(string.replace('fupdate',''))
+					$("#inputFirst").val(favArray[index].firstName)
+	    		$("#inputLast").val(favArray[index].lastName)
+	    		$("#inputEmail").val(favArray[index].email)
 					favArray.splice(index,1)
 					refreshList()
 				})
